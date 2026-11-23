@@ -16,10 +16,10 @@ function makeSide(owner, name, rng) {
   return { owner, name, life: START_LIFE, ward: 0, satchel: buildSatchel(owner, rng), hand: [], spent: [], chain: 0, lastSuit: null, distilled: false, intent: null };
 }
 
-export function createDuel(seed) {
+export function createDuel(seed, difficulty = 'adept') {
   const rng = createRng(seed);
   const state = {
-    seed, rng, turn: 1, phase: 'player',
+    seed, rng, difficulty, turn: 1, phase: 'player',
     player: makeSide('you', 'You', rng),
     rival: makeSide('rival', 'Abbess Grue', rng),
     lastBrew: null,

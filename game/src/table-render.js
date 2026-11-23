@@ -4,6 +4,7 @@ import { evaluateBrew, MAX_BREW } from './combos.js';
 import { START_LIFE, HAND_LIMIT } from './rules.js';
 import { makeCardFace, makeCardBack, suitGlyphSvg } from './card-art.js';
 import { rivalPortrait, playerPortrait } from './portraits.js';
+import { DIFFICULTIES } from './opponent-ai.js';
 
 export const STAGE_W = 1280;
 export const STAGE_H = 800;
@@ -33,10 +34,10 @@ export function handSlots(count, centerX = 640, cardW = HAND_CARD_W, span = 780)
   return Array.from({ length: count }, (_, i) => ({ x: left + gap * i, rot: (i - (count - 1) / 2) * 2.2, lift: Math.abs(i - (count - 1) / 2) * 3 }));
 }
 
-function lifePanel(side, who, isTurn) {
+function lifePanel(side, who, isTurn, level) {
   const p = el('div', `panel life-panel ${who}${isTurn ? ' active' : ''}`);
   const pct = Math.max(0, side.life / START_LIFE) * 100;
-  const title = who === 'rival' ? 'ABBESS GRUE' : 'YOU · APPRENTICE';
+  const title = who === 'rival' ? `ABBESS GRUE<span class="level-tag">${(DIFFICULTIES[level] || DIFFICULTIES.adept).name.toUpperCase()}</span>` : 'YOU · APPRENTICE';
   p.innerHTML = `
     <div class="who">${title}</div>
     <div class="life-row"><div class="flask"></div><span class="life-num">${side.life}</span><span class="life-max">/${START_LIFE}</span></div>
@@ -144,7 +145,7 @@ export function renderTable(root, state, ui) {
   table.append(el('div', 'felt-ring'));
   table.append(el('div', 'crucible'));
 
-  table.append(place(lifePanel(state.rival, 'rival', state.phase === 'rival'), 24, 20));
+  table.append(place(lifePanel(state.rival, 'rival', state.phase === 'rival', state.difficulty), 24, 20));
   table.append(place(lifePanel(state.player, 'player', state.phase === 'player'), 24, 596));
   table.append(place(intentPanel(state, ui), 968, 20));
   table.append(place(recipeBook(), 1010, 252));

@@ -171,3 +171,11 @@ html, body { margin: 0; height: 100%; background: #07090a; overflow: hidden; fon
 @keyframes rays { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .effects { gap: 12px; font-size: 20px; white-space: nowrap; }
 .effects > span { white-space: nowrap; }
+.title-start { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+.title-start .btn.start { margin-top: 0; }
+.btn.level { width: auto; margin-top: 0; padding: 10px 18px; font-size: 16px; background: linear-gradient(180deg, #d9f2e4, #7fbf98); box-shadow: 0 4px 0 #2f5a40, 0 8px 16px #000a; }
+.btn.level.hard { background: linear-gradient(180deg, #ffb39e, #d8432c); color: #fff; box-shadow: 0 4px 0 #6a160b, 0 8px 16px #000a; }
+.title-rival { position: absolute; right: 70px; top: 300px; display: flex; flex-direction: column; align-items: center; gap: 6px; font: bold 15px 'Segoe UI', sans-serif; letter-spacing: 3px; color: #ff9b7a; text-align: center; }
+.title-rival em { font: italic 15px Georgia, serif; letter-spacing: 1px; color: #d9c9a4; }
+.life-panel .level-tag { font-size: 11px; padding: 1px 6px; margin-left: 6px; border-radius: 8px; background: #ff9b7a33; color: #ffcdb8; letter-spacing: 1px; }
+.title-rival.you { right: auto; left: 70px; color: #f3d27a; }

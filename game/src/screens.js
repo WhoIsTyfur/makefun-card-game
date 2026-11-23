@@ -2,6 +2,7 @@
 import { SUITS, SUIT_ORDER } from './deck.js';
 import { makeCardFace, suitGlyphSvg } from './card-art.js';
 import { confetti } from './animations.js';
+import { rivalPortrait, playerPortrait } from './portraits.js';
 
 function overlay(cls) {
   const o = document.createElement('div');
@@ -21,8 +22,13 @@ export function renderTitle(root, { animate = true } = {}) {
     <div class="title-rules">
       ${SUIT_ORDER.map((s) => `<div class="rule">${suitGlyphSvg(s, 30)}<b style="color:${SUITS[s].color}">${SUITS[s].name}</b><span>${SUITS[s].rider}</span></div>`).join('')}
     </div>
-    <button class="btn start" data-action="start">BEGIN THE DUEL <kbd>Enter</kbd></button>
+    <div class="title-start">
+      <button class="btn level" data-action="start-novice">NOVICE <kbd>1</kbd></button>
+      <button class="btn start" data-action="start-adept">DUEL GRUE · ADEPT <kbd>Enter</kbd></button>
+      <button class="btn level hard" data-action="start-magister">MAGISTER <kbd>3</kbd></button>
+    </div>
     <div class="title-keys">Mouse: click cards · Keys: 1–0 pick · Enter brew · D distill · M mute</div>`;
+  o.querySelector('.title-glow').insertAdjacentHTML('afterend', `<div class="title-rival">${rivalPortrait(110)}<span>ABBESS GRUE<br><em>awaits</em></span></div><div class="title-rival you">${playerPortrait(110)}<span>YOU<br><em>the apprentice</em></span></div>`);
   const fan = o.querySelector('.title-fan');
   const showcase = [
     { id: 't1', suit: 'brimstone', value: 7 }, { id: 't2', suit: 'quicksilver', value: 7 }, { id: 't3', suit: 'salt', value: 7 },

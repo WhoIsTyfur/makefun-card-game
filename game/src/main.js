@@ -102,9 +102,12 @@ async function finish(won) {
   ui.busy = false;
 }
 
-function startDuel() {
+let difficulty = 'adept';
+
+function startDuel(level = difficulty) {
+  difficulty = level;
   startMusic();
-  state = createDuel(seedParam || (Date.now() & 0xffffff));
+  state = createDuel(seedParam || (Date.now() & 0xffffff), difficulty);
   ui.selected.clear();
   ui.busy = false;
   ui.pops = [];
@@ -120,6 +123,7 @@ bindInput(stage, {
     draw();
   },
   toggleSlot(i) {
+    if (screen === 'title' && (i === 0 || i === 2)) { startDuel(i === 0 ? 'novice' : 'magister'); return; }
     if (screen !== 'duel' || !state.player.hand[i]) return;
     this.toggleCard(state.player.hand[i].id);
   },
@@ -130,7 +134,8 @@ bindInput(stage, {
   },
   action(name) {
     if (name === 'mute') { toggleMute(); return; }
-    if (screen === 'title' && (name === 'start' || name === 'confirm')) { startDuel(); return; }
+    if (screen === 'title' && name.startsWith('start-')) { startDuel(name.slice(6)); return; }
+    if (screen === 'title' && name === 'confirm') { startDuel('adept'); return; }
     if ((screen === 'won' || screen === 'lost') && (name === 'restart' || name === 'confirm')) { startDuel(); return; }
     if (screen !== 'duel') return;
     if (name === 'brew' || name === 'confirm') playerBrew();
