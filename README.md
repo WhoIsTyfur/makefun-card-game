@@ -24,7 +24,8 @@ The rival announces its next brew on the table (recipe, suits, damage, ward), so
 against it with Salt or race it down. Both start at 80 vitality; reach 0 and the flask shatters.
 
 Mouse: click cards, BREW, DISTILL. Keys: `1`–`0` pick cards, `Enter` brew, `D` distill, `Esc` clear, `M` mute.
-All art is CSS and inline SVG, and all sound is synthesised with WebAudio: no image, sound or font files and no network.
+All art is CSS and inline SVG (cards, suit shapes, both duellists' portraits), and all sound and music is synthesised
+with WebAudio (`audio.js` effects, `music.js` a generative D-dorian score): no image, sound or font files and no network.
 
 ## How it is scored
 
@@ -48,7 +49,8 @@ Screenshot mode: `?shot=title|table|win|loss&seed=N` plays the real rules forwar
 `rng.js` seeded random · `deck.js` suits and satchels · `combos.js` recipe scoring · `rules.js` duel and turn flow ·
 `opponent-ai.js` the rival's planner and intent · `card-art.js` SVG card faces · `table-render.js` table layout ·
 `animations.js` slide/flip/deal and bursts · `audio.js` synthesised sound · `screens.js` title, victory, defeat ·
-`input.js` mouse and keys · `shots.js` staged screenshot moments · `main.js` boot and turn sequencing.
+`portraits.js` duellist portraits · `music.js` generative score · `input.js` mouse and keys ·
+`shots.js` staged screenshot moments · `main.js` boot and turn sequencing.
 
 ---
 

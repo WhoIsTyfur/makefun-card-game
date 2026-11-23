@@ -13,6 +13,8 @@ function ac() {
 }
 
 export function toggleMute() { muted = !muted; return muted; }
+export function isMuted() { return muted; }
+export function audioContext() { return ac(); }
 
 function tone(freq, dur, { type = 'sine', gain = 0.18, at = 0, slide = 0 } = {}) {
   const a = ac();

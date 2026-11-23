@@ -4,6 +4,7 @@ import { renderTable, STAGE_W, STAGE_H } from './table-render.js';
 import { renderTitle, renderEnd } from './screens.js';
 import { captureCards, animateFromCapture, burst, floatText, shake, slamCallout } from './animations.js';
 import { sfx, toggleMute } from './audio.js';
+import { startMusic } from './music.js';
 import { bindInput } from './input.js';
 import { stageTable, stageEnding } from './shots.js';
 import { SUITS } from './deck.js';
@@ -102,6 +103,7 @@ async function finish(won) {
 }
 
 function startDuel() {
+  startMusic();
   state = createDuel(seedParam || (Date.now() & 0xffffff));
   ui.selected.clear();
   ui.busy = false;
