@@ -28,6 +28,16 @@ function showiestSelection(state) {
   return best;
 }
 
+const RANK_RECIPES = ['twoPair', 'triple', 'fullHouse', 'quad'];
+
+/** A moment worth a cover: Grue just landed a mixed-suit rank recipe and every suit is in your hand. */
+function showsOffSuits(state, last) {
+  if (state.turn < 3 || last.dealt < 12 || state.rival.hand.length < 4) return false;
+  if (!last.brew.combos.some((c) => RANK_RECIPES.includes(c.key))) return false;
+  if (new Set(last.brew.cards.map((c) => c.suit)).size < 3) return false;
+  return new Set(state.player.hand.map((c) => c.suit)).size === 4;
+}
+
 /** Mid-duel, on the player's turn: Grue's brew just landed with a recipe, her next intent is up. */
 export function stageTable(seed) {
   for (let s = seed; s < seed + 3000; s++) {
@@ -36,9 +46,9 @@ export function stageTable(seed) {
       playOneTurn(state);
       const last = state.lastBrew;
       if (state.phase !== 'player' || !last || last.by !== 'rival') continue;
-      if (state.turn < 3 || last.brew.combos.length < 2 || last.dealt < 8 || state.rival.hand.length < 4) continue;
+      if (!showsOffSuits(state, last)) continue;
       if (state.player.life < 25 || state.rival.life < 20 || state.rival.life > 70) continue;
-      if (state.player.hand.length < 6 || !state.rival.intent || state.rival.intent.brew.damage < 10) continue;
+      if (state.player.hand.length < 7 || !state.rival.intent || state.rival.intent.brew.damage < 10) continue;
       const pick = showiestSelection(state);
       if (!pick || pick.brew.combos.length < 2) continue;
       return { state, selected: new Set(pick.brew.cards.map((c) => c.id)), pops: [{ target: 'player', text: `−${last.dealt}`, kind: 'dmg' }], seed: s };

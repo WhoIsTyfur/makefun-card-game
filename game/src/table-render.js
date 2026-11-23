@@ -3,6 +3,7 @@ import { SUITS, SUIT_ORDER } from './deck.js';
 import { evaluateBrew, MAX_BREW } from './combos.js';
 import { START_LIFE, HAND_LIMIT } from './rules.js';
 import { makeCardFace, makeCardBack, suitGlyphSvg } from './card-art.js';
+import { rivalPortrait, playerPortrait } from './portraits.js';
 
 export const STAGE_W = 1280;
 export const STAGE_H = 800;
@@ -44,11 +45,21 @@ function lifePanel(side, who, isTurn) {
       <span class="ward-badge${side.ward ? ' on' : ''}">${suitGlyphSvg('salt', 22)} WARD ${side.ward}</span>
       <span class="chain-badge${side.chain >= 2 ? ' on' : ''}">CHAIN ×${side.chain}</span>
     </div>
-    <div class="satchel">Satchel ${side.satchel.length} · Hand ${side.hand.length}</div>`;
+    <div class="satchel">Satchel ${side.satchel.length} · Hand ${side.hand.length}</div>
+    ${who === 'rival' ? rivalPortrait(64) : playerPortrait(64)}`;
   return p;
 }
 
-function intentPanel(state) {
+/** How hard the announced brew will land, counting the ward your selected brew would add. */
+function incomingAfterWard(state, ui) {
+  const picked = state.player.hand.filter((c) => ui.selected.has(c.id));
+  const extraWard = state.phase === 'player' ? evaluateBrew(picked, state.player.lastSuit, state.player.chain).ward : 0;
+  const ward = state.player.ward + extraWard;
+  const incoming = state.rival.intent.brew.damage;
+  return { incoming, ward, taken: Math.max(0, incoming - ward) };
+}
+
+function intentPanel(state, ui) {
   const intent = state.rival.intent;
   const p = el('div', 'panel intent-panel');
   if (!intent || state.phase === 'won' || state.phase === 'lost') {
@@ -68,8 +79,16 @@ function intentPanel(state) {
       ${b.ward ? `<span class="wrd">■ +${b.ward}</span>` : ''}
       ${b.heal ? `<span class="hl">◆ +${b.heal}</span>` : ''}
     </div>
-    <div class="intent-tip">Ward with ■ Salt to blunt it</div>`;
+    ${counterLine(state, ui)}`;
   return p;
+}
+
+function counterLine(state, ui) {
+  const { incoming, ward, taken } = incomingAfterWard(state, ui);
+  if (!incoming) return '<div class="intent-tip">No attack coming: press your advantage</div>';
+  if (ward >= incoming) return `<div class="intent-tip good">■ Your ward ${ward} blocks it all</div>`;
+  if (ward > 0) return `<div class="intent-tip">You take <b>${taken}</b> · ■ ward blocks ${ward}</div>`;
+  return `<div class="intent-tip">You take <b>${taken}</b> · ward with ■ Salt to blunt it</div>`;
 }
 
 function recipeBook() {
@@ -127,7 +146,7 @@ export function renderTable(root, state, ui) {
 
   table.append(place(lifePanel(state.rival, 'rival', state.phase === 'rival'), 24, 20));
   table.append(place(lifePanel(state.player, 'player', state.phase === 'player'), 24, 596));
-  table.append(place(intentPanel(state), 968, 20));
+  table.append(place(intentPanel(state, ui), 968, 20));
   table.append(place(recipeBook(), 1010, 252));
   table.append(place(previewPanel(state, ui), 1040, 596));
 
@@ -166,7 +185,7 @@ export function renderTable(root, state, ui) {
   table.append(place(el('div', 'log', state.log[state.log.length - 1] || ''), 268, 548));
 
   // Player hand.
-  const slots = handSlots(state.player.hand.length, 650, HAND_CARD_W, 740);
+  const slots = handSlots(state.player.hand.length, 662, HAND_CARD_W, 730);
   state.player.hand.forEach((card, i) => {
     const s = slots[i];
     const raised = ui.selected.has(card.id);

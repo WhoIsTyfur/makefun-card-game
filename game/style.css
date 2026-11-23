@@ -41,7 +41,7 @@ html, body { margin: 0; height: 100%; background: #07090a; overflow: hidden; fon
 
 /* Panels */
 .panel { background: linear-gradient(180deg, #1a1410ee, #0e0b08ee); border: 2px solid #b98c45; border-radius: 14px; box-shadow: 0 10px 24px #000b; padding: 10px 14px; }
-.life-panel { width: 236px; }
+.life-panel { width: 262px; }
 .life-panel.active { border-color: #ffd76a; box-shadow: 0 0 0 2px #ffd76a55, 0 0 30px #ffd76a44, 0 10px 24px #000b; }
 .life-panel .who { font: bold 15px 'Segoe UI', sans-serif; letter-spacing: 2px; color: #f3d27a; }
 .life-panel.rival .who { color: #ff9b7a; }
@@ -155,3 +155,19 @@ html, body { margin: 0; height: 100%; background: #07090a; overflow: hidden; fon
 .end-stats em { font-style: normal; color: #a99878; letter-spacing: 1px; }
 .end-stats b { font-size: 22px; color: #ffd27a; }
 .end-line { font: italic 18px Georgia, serif; color: #e6d8b8; margin-top: 6px; }
+
+/* Portraits, counter line, victory rays (v2) */
+.pop { position: absolute; }
+.life-panel .portrait { position: absolute; right: 10px; top: 34px; filter: drop-shadow(0 4px 6px #000a); }
+.intent-panel .portrait { position: absolute; right: 12px; top: 12px; }
+.intent-tip b { color: #ff6a4a; font: 900 18px 'Segoe UI', sans-serif; }
+.intent-tip.good { color: #c4a8ff; font-style: normal; font-weight: bold; }
+.preview-title { white-space: normal; font-size: 15px; line-height: 1.15; min-height: 36px; max-height: 36px; overflow: hidden; }
+.preview-nums { margin-top: 0; }
+.action-panel .btn { margin-top: 5px; }
+.end-screen.win::before { content: ''; position: absolute; left: 50%; top: 45%; width: 1600px; height: 1600px; transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg, #ffd27a2e 0deg 8deg, transparent 8deg 22deg); border-radius: 50%;
+  -webkit-mask: radial-gradient(circle, #000 0%, transparent 60%); mask: radial-gradient(circle, #000 0%, transparent 60%); animation: rays 18s linear infinite; }
+@keyframes rays { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.effects { gap: 12px; font-size: 20px; white-space: nowrap; }
+.effects > span { white-space: nowrap; }

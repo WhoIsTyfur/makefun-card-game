@@ -9,7 +9,7 @@ const CHROME = process.env.CHROME || 'C:\\Program Files\\Google\\Chrome\\Applica
 const base = process.argv[2] || 'http://localhost:8080/';
 const outDir = process.argv[3] || 'screenshots';
 const SHOTS = [
-  { file: '1-duel-table.jpg', query: 'shot=table&seed=1961' },
+  { file: '1-duel-table.jpg', query: 'shot=table&seed=2565' },
   { file: '2-title.jpg', query: 'shot=title' },
   { file: '3-victory.jpg', query: 'shot=win&seed=3' },
   { file: '4-defeat.jpg', query: 'shot=loss&seed=5' },
