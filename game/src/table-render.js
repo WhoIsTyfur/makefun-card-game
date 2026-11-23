@@ -34,8 +34,8 @@ export function handSlots(count, centerX = 640, cardW = HAND_CARD_W, span = 780)
   return Array.from({ length: count }, (_, i) => ({ x: left + gap * i, rot: (i - (count - 1) / 2) * 2.2, lift: Math.abs(i - (count - 1) / 2) * 3 }));
 }
 
-function lifePanel(side, who, isTurn, level) {
-  const p = el('div', `panel life-panel ${who}${isTurn ? ' active' : ''}`);
+function lifePanel(side, who, isTurn, level, hurt = false) {
+  const p = el('div', `panel life-panel ${who}${isTurn ? ' active' : ''}${hurt ? ' hurt' : ''}`);
   const pct = Math.max(0, side.life / START_LIFE) * 100;
   const title = who === 'rival' ? `ABBESS GRUE<span class="level-tag">${(DIFFICULTIES[level] || DIFFICULTIES.adept).name.toUpperCase()}</span>` : 'YOU · APPRENTICE';
   p.innerHTML = `
@@ -74,7 +74,7 @@ function intentPanel(state, ui) {
     <div class="intent-head">RIVAL INTENT · NEXT BREW</div>
     <div class="intent-mood${threat}">${threat ? 'LETHAL!' : intent.mood.toUpperCase()}</div>
     <div class="intent-title">${b.title}</div>
-    <div class="intent-glyphs">${glyphs}<span class="intent-count">${intent.cards.length} cards</span></div>
+    <div class="intent-glyphs">${glyphs}<span class="intent-count">${intent.cards.length} cards · glowing in her hand</span></div>
     <div class="intent-nums">
       <span class="dmg">⚔ ${b.damage}</span>
       ${b.ward ? `<span class="wrd">■ +${b.ward}</span>` : ''}
@@ -146,7 +146,8 @@ export function renderTable(root, state, ui) {
   table.append(el('div', 'crucible'));
 
   table.append(place(lifePanel(state.rival, 'rival', state.phase === 'rival', state.difficulty), 24, 20));
-  table.append(place(lifePanel(state.player, 'player', state.phase === 'player'), 24, 596));
+  const playerHurt = state.phase === 'player' && state.lastBrew?.by === 'rival' && state.lastBrew.dealt > 0;
+  table.append(place(lifePanel(state.player, 'player', state.phase === 'player', null, playerHurt), 24, 596));
   table.append(place(intentPanel(state, ui), 968, 20));
   table.append(place(recipeBook(), 1010, 252));
   table.append(place(previewPanel(state, ui), 1040, 596));
@@ -156,7 +157,7 @@ export function renderTable(root, state, ui) {
     const card = state.rival.hand[i];
     const back = place(makeCardBack(card.id), slot.x, 26 - slot.lift * 0.5, -slot.rot);
     back.classList.add('small');
-    if (ui.shot !== 'table' && state.rival.intent && state.rival.intent.cards.some((c) => c.id === card.id)) back.classList.add('primed');
+    if (state.rival.intent && state.rival.intent.cards.some((c) => c.id === card.id)) back.classList.add('primed');
     table.append(back);
   });
 

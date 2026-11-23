@@ -179,3 +179,6 @@ html, body { margin: 0; height: 100%; background: #07090a; overflow: hidden; fon
 .title-rival em { font: italic 15px Georgia, serif; letter-spacing: 1px; color: #d9c9a4; }
 .life-panel .level-tag { font-size: 11px; padding: 1px 6px; margin-left: 6px; border-radius: 8px; background: #ff9b7a33; color: #ffcdb8; letter-spacing: 1px; }
 .title-rival.you { right: auto; left: 70px; color: #f3d27a; }
+.life-panel.hurt { border-color: #ff4a2a; box-shadow: 0 0 0 2px #ff4a2a66, 0 0 36px #ff4a2a66, 0 10px 24px #000b; }
+.life-panel.hurt .life-num { color: #ffe0d8; }
+.primed-note { font: bold 12px 'Segoe UI', sans-serif; letter-spacing: 2px; color: #ff9b7a; text-align: center; width: 200px; }
